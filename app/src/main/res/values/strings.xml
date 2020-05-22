@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Exercise Timer</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="start">Start</string>
+    <string name="select_exercise_set">Select Exercise Set</string>
+    <string name="add_exercise">Add Exercise</string>
+    <string name="add_active_rest">Add Active Rest</string>
+    <string name="add_rest">Add Rest</string>
+    <string name="your_set_name">Your set name</string>
+</resources>
