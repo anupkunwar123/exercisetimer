@@ -13,15 +13,16 @@ import kotlinx.android.synthetic.main.fragment_timer.*
  */
 class TimerFragment : Fragment() {
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_timer, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val exerciseId = arguments?.getInt("exercise_item_id")
         buttonSelectExerciseSet.setOnClickListener {
             findNavController().navigate(TimerFragmentDirections.actionTimerFragmentToSetListFragment())
         }

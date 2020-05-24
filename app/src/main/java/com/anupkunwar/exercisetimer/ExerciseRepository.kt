@@ -2,10 +2,15 @@ package com.anupkunwar.exercisetimer
 
 import com.anupkunwar.exercisetimer.model.Exercise
 import com.anupkunwar.exercisetimer.model.ExerciseDatabase
+import kotlinx.coroutines.flow.Flow
 
 class ExerciseRepository private constructor(private val exerciseDatabase: ExerciseDatabase) {
     suspend fun insert(exercise: Exercise): Long {
         return exerciseDatabase.exerciseDao().insertExercise(exercise)
+    }
+
+    fun getExerciseList(): Flow<List<Exercise>> {
+        return exerciseDatabase.exerciseDao().getDistinctExercise()
     }
 
     companion object {

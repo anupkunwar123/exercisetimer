@@ -4,13 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.anupkunwar.exercisetimer.databinding.FragmentCreateSetBinding
 import com.anupkunwar.exercisetimer.databinding.ItemExerciseBinding
 import com.anupkunwar.exercisetimer.model.ExerciseItem
+import com.anupkunwar.exercisetimer.model.SimpleItemDecoration
+import kotlinx.coroutines.InternalCoroutinesApi
 
 /**
  * A simple [Fragment] subclass.
@@ -34,12 +38,26 @@ class CreateSetFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val adapter = CreateSetAdapter()
         binding.recyclerView.adapter = adapter
+        SimpleItemDecoration(
+            resources.getDimensionPixelSize(R.dimen.divider_height).toFloat(),
+            ContextCompat.getColor(requireContext(), R.color.divider_color)
+        ).apply {
+            binding.recyclerView.addItemDecoration(this)
+        }
         createSetViewModel.itemsLiveData.observe(viewLifecycleOwner, Observer {
             adapter.items = it
         })
+
+        createSetViewModel.savedInfo.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                findNavController().popBackStack()
+            }
+        })
+
     }
 
     override fun onDestroyView() {
