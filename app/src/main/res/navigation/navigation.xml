@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/timerFragment"
-        android:name="com.anupkunwar.exercisetimer.TimerFragment"
+        android:name="com.anupkunwar.exercisetimer.ui.TimerFragment"
         android:label="fragment_timer"
         tools:layout="@layout/fragment_timer">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/setListFragment"
-        android:name="com.anupkunwar.exercisetimer.SetListFragment"
+        android:name="com.anupkunwar.exercisetimer.ui.SetListFragment"
         android:label="fragment_set_list"
         tools:layout="@layout/fragment_set_list">
         <action
@@ -32,7 +32,7 @@
     </fragment>
     <fragment
         android:id="@+id/creatSetFragment"
-        android:name="com.anupkunwar.exercisetimer.CreateSetFragment"
+        android:name="com.anupkunwar.exercisetimer.ui.CreateSetFragment"
         android:label="fragment_creat_set"
         tools:layout="@layout/fragment_create_set">
         <action

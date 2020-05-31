@@ -1,4 +1,4 @@
-package com.anupkunwar.exercisetimer
+package com.anupkunwar.exercisetimer.ui
 
 import android.content.ComponentName
 import android.content.Context
@@ -9,10 +9,11 @@ import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.anupkunwar.exercisetimer.R
+import com.anupkunwar.exercisetimer.service.TimerService
 import com.anupkunwar.exercisetimer.databinding.FragmentTimerBinding
 
 /**
@@ -49,7 +50,10 @@ class TimerFragment : Fragment() {
             })
             mService.showNotification = false
             requireContext().startService(Intent(requireContext(), TimerService::class.java).also {
-                it.putExtra(TimerService.TIMER_SERVICE_DATA, TimerService.STOP_FOREGROUND)
+                it.putExtra(
+                    TimerService.TIMER_SERVICE_DATA,
+                    TimerService.STOP_FOREGROUND
+                )
             })
             mService.pausePlayLiveData.observe(viewLifecycleOwner, Observer { isPaused ->
                 binding.buttonPausePlay.setImageResource(if (isPaused) R.drawable.ic_play else R.drawable.ic_pause)
@@ -127,7 +131,10 @@ class TimerFragment : Fragment() {
         super.onPause()
         if (mBound && mService.stateLiveData.value == TimerService.State.EXERCISE_RUNNING) {
             requireContext().startService(Intent(requireContext(), TimerService::class.java).also {
-                it.putExtra(TimerService.TIMER_SERVICE_DATA, TimerService.START_FOREGROUND)
+                it.putExtra(
+                    TimerService.TIMER_SERVICE_DATA,
+                    TimerService.START_FOREGROUND
+                )
             })
         }
 

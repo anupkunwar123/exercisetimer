@@ -1,4 +1,4 @@
-package com.anupkunwar.exercisetimer
+package com.anupkunwar.exercisetimer.service
 
 import android.app.Notification
 import android.app.PendingIntent
@@ -10,6 +10,11 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import com.anupkunwar.exercisetimer.factory.InjectorFactory
+import com.anupkunwar.exercisetimer.MainActivity
+import com.anupkunwar.exercisetimer.MyApp
+import com.anupkunwar.exercisetimer.R
+import com.anupkunwar.exercisetimer.repo.ExerciseRepository
 import kotlinx.coroutines.*
 
 class TimerService : Service() {
@@ -47,14 +52,19 @@ class TimerService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        repository = InjectorFactory.getExerciseRepository(this)
+        repository =
+            InjectorFactory.getExerciseRepository(
+                this
+            )
         totalTimeLiveData.observeForever(observer)
     }
 
 
     private fun buildNotification(): Notification {
 
-        return NotificationCompat.Builder(this, MyApp.CHANNEL_ID)
+        return NotificationCompat.Builder(this,
+            MyApp.CHANNEL_ID
+        )
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(setName.value)
             .setContentIntent(getPendingIntent())
@@ -68,7 +78,9 @@ class TimerService : Service() {
             )
             .addAction(
                 if (isPaused()) R.drawable.ic_play else R.drawable.ic_pause,
-                if (isPaused()) getString(R.string.play) else getString(R.string.pause),
+                if (isPaused()) getString(R.string.play) else getString(
+                    R.string.pause
+                ),
                 getPendingIntentPausePlay()
             ).build()
     }
@@ -188,7 +200,8 @@ class TimerService : Service() {
         setName.value = ""
         exerciseName.value = ""
         pausePlayLiveData.value = false
-        stateLiveData.value = State.NONE
+        stateLiveData.value =
+            State.NONE
         totalTimeLiveData.value = null
     }
 

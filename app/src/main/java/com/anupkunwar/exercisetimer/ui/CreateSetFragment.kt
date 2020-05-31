@@ -1,4 +1,4 @@
-package com.anupkunwar.exercisetimer
+package com.anupkunwar.exercisetimer.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,11 +10,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.anupkunwar.exercisetimer.viewmodel.CreateSetViewModel
+import com.anupkunwar.exercisetimer.factory.InjectorFactory
+import com.anupkunwar.exercisetimer.R
 import com.anupkunwar.exercisetimer.databinding.FragmentCreateSetBinding
 import com.anupkunwar.exercisetimer.databinding.ItemExerciseBinding
 import com.anupkunwar.exercisetimer.model.ExerciseItem
 import com.anupkunwar.exercisetimer.model.SimpleItemDecoration
-import kotlinx.coroutines.InternalCoroutinesApi
 
 /**
  * A simple [Fragment] subclass.
@@ -24,7 +26,9 @@ class CreateSetFragment : Fragment() {
     private var _binding: FragmentCreateSetBinding? = null
     private val binding get() = _binding!!
     private val createSetViewModel: CreateSetViewModel by viewModels {
-        InjectorFactory.getCreateSetViewModelFactory(requireActivity())
+        InjectorFactory.getCreateSetViewModelFactory(
+            requireActivity()
+        )
     }
 
 
@@ -40,11 +44,14 @@ class CreateSetFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val adapter = CreateSetAdapter()
+        val adapter =
+            CreateSetAdapter()
         binding.recyclerView.adapter = adapter
         SimpleItemDecoration(
             resources.getDimensionPixelSize(R.dimen.divider_height).toFloat(),
-            ContextCompat.getColor(requireContext(), R.color.divider_color)
+            ContextCompat.getColor(requireContext(),
+                R.color.divider_color
+            )
         ).apply {
             binding.recyclerView.addItemDecoration(this)
         }

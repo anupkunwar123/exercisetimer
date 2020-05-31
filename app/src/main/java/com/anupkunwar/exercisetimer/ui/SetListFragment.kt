@@ -1,4 +1,4 @@
-package com.anupkunwar.exercisetimer
+package com.anupkunwar.exercisetimer.ui
 
 import android.content.ComponentName
 import android.content.Context
@@ -16,10 +16,15 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.anupkunwar.exercisetimer.*
 import com.anupkunwar.exercisetimer.databinding.FragmentSetListBinding
 import com.anupkunwar.exercisetimer.databinding.ItemExerciseSetBinding
+import com.anupkunwar.exercisetimer.factory.InjectorFactory
+import com.anupkunwar.exercisetimer.listener.RecyclerViewItemClickListener
 import com.anupkunwar.exercisetimer.model.Exercise
 import com.anupkunwar.exercisetimer.model.SimpleItemDecoration
+import com.anupkunwar.exercisetimer.service.TimerService
+import com.anupkunwar.exercisetimer.viewmodel.SetListViewModel
 import kotlinx.android.synthetic.main.fragment_set_list.*
 import kotlinx.coroutines.InternalCoroutinesApi
 
@@ -29,7 +34,9 @@ import kotlinx.coroutines.InternalCoroutinesApi
 class SetListFragment : Fragment() {
 
     private val setListViewModel: SetListViewModel by viewModels {
-        InjectorFactory.getSetListViewModelFactory(requireActivity())
+        InjectorFactory.getSetListViewModelFactory(
+            requireActivity()
+        )
     }
 
 
@@ -65,11 +72,14 @@ class SetListFragment : Fragment() {
         fabCreateSetList.setOnClickListener {
             findNavController().navigate(SetListFragmentDirections.actionSetListFragmentToCreatSetFragment())
         }
-        val adapter = SetListAdapter().also {
-            it.itemClickListener = object : RecyclerViewItemClickListener<Exercise> {
+        val adapter = SetListAdapter()
+            .also {
+            it.itemClickListener = object :
+                RecyclerViewItemClickListener<Exercise> {
                 override fun onItemClicked(item: Exercise) {
                     if (mBound) {
-                        mService.stateLiveData.value = TimerService.State.EXERCISE_SELECTED
+                        mService.stateLiveData.value =
+                            TimerService.State.EXERCISE_SELECTED
                         mService.setName.value = item.title
                         mService.exerciseId = item.id
                         findNavController().navigate(
@@ -87,7 +97,9 @@ class SetListFragment : Fragment() {
         })
         val simpleItemDecoration = SimpleItemDecoration(
             resources.getDimensionPixelSize(R.dimen.divider_height).toFloat(),
-            ContextCompat.getColor(requireContext(), R.color.divider_color)
+            ContextCompat.getColor(requireContext(),
+                R.color.divider_color
+            )
         )
         binding.recyclerView.addItemDecoration(simpleItemDecoration)
         setListViewModel.getSavedExercise()
@@ -104,7 +116,9 @@ class SetListFragment : Fragment() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SetListViewHolder {
             val binding =
                 ItemExerciseSetBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            return SetListViewHolder(binding).also { vh ->
+            return SetListViewHolder(
+                binding
+            ).also { vh ->
                 vh.itemView.setOnClickListener {
                     if (vh.adapterPosition != RecyclerView.NO_POSITION) {
                         itemClickListener?.onItemClicked(getItem(vh.adapterPosition))

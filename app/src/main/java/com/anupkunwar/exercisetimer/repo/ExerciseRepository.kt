@@ -1,4 +1,4 @@
-package com.anupkunwar.exercisetimer
+package com.anupkunwar.exercisetimer.repo
 
 import com.anupkunwar.exercisetimer.model.Exercise
 import com.anupkunwar.exercisetimer.model.ExerciseDatabase
@@ -21,8 +21,12 @@ class ExerciseRepository private constructor(private val exerciseDatabase: Exerc
         @Volatile
         private var instance: ExerciseRepository? = null
         fun getInstance(exerciseDatabase: ExerciseDatabase): ExerciseRepository {
-            return instance ?: synchronized(this) {
-                instance ?: ExerciseRepository(exerciseDatabase).also {
+            return instance
+                ?: synchronized(this) {
+                instance
+                    ?: ExerciseRepository(
+                        exerciseDatabase
+                    ).also {
                     instance = it
                 }
             }

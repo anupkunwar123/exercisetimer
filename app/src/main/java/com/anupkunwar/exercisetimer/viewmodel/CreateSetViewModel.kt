@@ -1,13 +1,12 @@
-package com.anupkunwar.exercisetimer
+package com.anupkunwar.exercisetimer.viewmodel
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.anupkunwar.exercisetimer.repo.ExerciseRepository
 import com.anupkunwar.exercisetimer.model.Exercise
 import com.anupkunwar.exercisetimer.model.ExerciseItem
-import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.launch
 
 class CreateSetViewModel(private val exerciseRepository: ExerciseRepository) : ViewModel() {
@@ -19,9 +18,12 @@ class CreateSetViewModel(private val exerciseRepository: ExerciseRepository) : V
 
     val savedInfo = MutableLiveData<Boolean>()
 
-    var exerciseTimeInSec = DEFAULT_EXERCISE_TIME
-    var activeRestTimeInSec = DEFAULT_ACTIVE_REST_TIME
-    var restTimeInSec = DEFAULT_REST_TIME
+    var exerciseTimeInSec =
+        DEFAULT_EXERCISE_TIME
+    var activeRestTimeInSec =
+        DEFAULT_ACTIVE_REST_TIME
+    var restTimeInSec =
+        DEFAULT_REST_TIME
 
     var setName = ObservableField("")
 
