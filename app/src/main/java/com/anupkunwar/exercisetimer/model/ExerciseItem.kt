@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 
 class ExerciseItem(
     val type: Type,
-    val time: Long
+    val time: Int
 ) {
     enum class Type(val code: Int) {
         EXERCISE(0) {

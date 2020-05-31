@@ -12,9 +12,9 @@ import kotlinx.coroutines.launch
 
 class CreateSetViewModel(private val exerciseRepository: ExerciseRepository) : ViewModel() {
     companion object {
-        const val DEFAULT_EXERCISE_TIME = 60L
-        const val DEFAULT_ACTIVE_REST_TIME = 30L
-        const val DEFAULT_REST_TIME = 20L
+        const val DEFAULT_EXERCISE_TIME = 60
+        const val DEFAULT_ACTIVE_REST_TIME = 30
+        const val DEFAULT_REST_TIME = 20
     }
 
     val savedInfo = MutableLiveData<Boolean>()

@@ -1,6 +1,11 @@
 package com.anupkunwar.exercisetimer
 
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +44,22 @@ class SetListFragment : Fragment() {
         return binding.root
     }
 
+    private lateinit var mService: TimerService
+    private var mBound: Boolean = false
+
+    private val connection = object : ServiceConnection {
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            val binder = service as TimerService.LocalBinder
+            mService = binder.getServices()
+            mBound = true
+        }
+
+        override fun onServiceDisconnected(arg0: ComponentName) {
+            mBound = false
+        }
+    }
+
+
     @InternalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         fabCreateSetList.setOnClickListener {
@@ -47,11 +68,15 @@ class SetListFragment : Fragment() {
         val adapter = SetListAdapter().also {
             it.itemClickListener = object : RecyclerViewItemClickListener<Exercise> {
                 override fun onItemClicked(item: Exercise) {
-                    findNavController().navigate(
-                        SetListFragmentDirections.actionSetListFragmentToTimerFragment2(
-                            exerciseItemId = item.id
+                    if (mBound) {
+                        mService.stateLiveData.value = TimerService.State.EXERCISE_SELECTED
+                        mService.setName.value = item.title
+                        mService.exerciseId = item.id
+                        findNavController().navigate(
+                            SetListFragmentDirections.actionSetListFragmentToTimerFragment2()
                         )
-                    )
+                    }
+
                 }
 
             }
@@ -102,6 +127,21 @@ class SetListFragment : Fragment() {
                 item = exerciseItem
                 executePendingBindings()
             }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Intent(requireContext(), TimerService::class.java).apply {
+            requireContext().bindService(this, connection, Context.BIND_AUTO_CREATE)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (mBound) {
+            requireContext().unbindService(connection)
+            mBound = false
         }
     }
 }

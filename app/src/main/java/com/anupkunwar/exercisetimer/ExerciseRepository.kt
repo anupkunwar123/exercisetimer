@@ -13,6 +13,10 @@ class ExerciseRepository private constructor(private val exerciseDatabase: Exerc
         return exerciseDatabase.exerciseDao().getDistinctExercise()
     }
 
+    suspend fun getExerciseById(id: Int): Exercise {
+        return exerciseDatabase.exerciseDao().getExerciseById(id)
+    }
+
     companion object {
         @Volatile
         private var instance: ExerciseRepository? = null

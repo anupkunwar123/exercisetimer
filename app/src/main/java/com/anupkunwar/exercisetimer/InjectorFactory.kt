@@ -7,19 +7,23 @@ import com.anupkunwar.exercisetimer.model.ExerciseDatabase
 
 object InjectorFactory {
     fun getCreateSetViewModelFactory(context: Context): CreateSetViewModelFactory {
-        return CreateSetViewModelFactory(context)
+        return CreateSetViewModelFactory(context = context)
     }
 
     fun getSetListViewModelFactory(context: Context): SetListViewModelFactory {
-        return SetListViewModelFactory(context)
+        return SetListViewModelFactory(context = context)
     }
 
-    fun getDatabase(context: Context): ExerciseDatabase {
-        return ExerciseDatabase.getInstance(context)
+    private fun getDatabase(context: Context): ExerciseDatabase {
+        return ExerciseDatabase.getInstance(context = context)
+    }
+
+    fun getTimerViewModelFactory(context: Context): TimerViewModelFactory {
+        return TimerViewModelFactory(context = context)
     }
 
     fun getExerciseRepository(context: Context): ExerciseRepository {
-        return ExerciseRepository.getInstance(getDatabase(context))
+        return ExerciseRepository.getInstance(getDatabase(context = context))
     }
 
 
@@ -38,4 +42,13 @@ class SetListViewModelFactory(private val context: Context) :
         return SetListViewModel(InjectorFactory.getExerciseRepository(context)) as T
     }
 }
+
+class TimerViewModelFactory(private val context: Context) :
+    ViewModelProvider.NewInstanceFactory() {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return TimerViewModel(InjectorFactory.getExerciseRepository(context)) as T
+    }
+}
+
+
 
