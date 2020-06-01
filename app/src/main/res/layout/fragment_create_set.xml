@@ -32,11 +32,13 @@
             android:layout_marginTop="16dp"
             android:hint="@string/your_set_name"
             android:paddingLeft="16dp"
+            android:inputType="textCapWords"
             android:text="@={viewModel.setName}"
             android:textAppearance="?android:attr/textAppearanceLarge"
             app:layout_constraintEnd_toStartOf="@id/buttonSave"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:paddingStart="16dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
