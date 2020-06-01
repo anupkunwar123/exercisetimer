@@ -9,12 +9,13 @@ import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.anupkunwar.exercisetimer.R
-import com.anupkunwar.exercisetimer.service.TimerService
 import com.anupkunwar.exercisetimer.databinding.FragmentTimerBinding
+import com.anupkunwar.exercisetimer.service.TimerService
 
 /**
  * A simple [Fragment] subclass.

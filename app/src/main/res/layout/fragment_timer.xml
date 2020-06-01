@@ -7,7 +7,7 @@
 
         <import type="android.view.View" />
 
-        <import type="com.anupkunwar.exercisetimer.service.TimerService" />
+        <import type="com.anupkunwar.exercisetimer.service.TimerService.State" />
 
         <variable
             name="stateLiveData"
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/select_exercise_set"
-            android:visibility="@{stateLiveData == null || stateLiveData == State.NONE ? View.VISIBLE : View.GONE}"
+            android:visibility="@{stateLiveData == null || stateLiveData == State.NONE ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -67,6 +67,7 @@
             android:layout_marginBottom="16dp"
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textSize="35sp"
             android:visibility="@{stateLiveData != null &amp;&amp; stateLiveData == State.EXERCISE_RUNNING ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toTopOf="@id/timerTextView"
             app:layout_constraintEnd_toEndOf="parent"

@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.room.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 
@@ -111,6 +112,7 @@ abstract class ExerciseDao {
     @Query("SELECT * FROM exercise ORDER BY id DESC")
     abstract fun getExercise(): Flow<List<Exercise>>
 
+    @ExperimentalCoroutinesApi
     fun getDistinctExercise() = getExercise().distinctUntilChanged()
 }
 
