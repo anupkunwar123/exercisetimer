@@ -4,16 +4,18 @@ import android.app.Notification
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
+import android.media.AudioManager
+import android.media.ToneGenerator
 import android.os.Binder
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.anupkunwar.exercisetimer.factory.InjectorFactory
 import com.anupkunwar.exercisetimer.MainActivity
 import com.anupkunwar.exercisetimer.MyApp
 import com.anupkunwar.exercisetimer.R
+import com.anupkunwar.exercisetimer.factory.InjectorFactory
 import com.anupkunwar.exercisetimer.repo.ExerciseRepository
 import kotlinx.coroutines.*
 
@@ -25,6 +27,7 @@ class TimerService : Service() {
         const val PAUSE_TIMER = 2
         const val PLAY_TIMER = 3
         const val TIMER_SERVICE_DATA = "timerServiceData"
+        const val MAKE_TONE_WHEN_REMAINING_SECOND = 3
     }
 
     private val scope = MainScope()
@@ -46,6 +49,7 @@ class TimerService : Service() {
 
     private lateinit var repository: ExerciseRepository
     private val binder = LocalBinder()
+    private lateinit var toneGenerator: ToneGenerator
     override fun onBind(intent: Intent): IBinder {
         return binder
     }
@@ -57,12 +61,15 @@ class TimerService : Service() {
                 this
             )
         totalTimeLiveData.observeForever(observer)
+        toneGenerator = ToneGenerator(AudioManager.STREAM_ALARM, 100)
+
     }
 
 
     private fun buildNotification(): Notification {
 
-        return NotificationCompat.Builder(this,
+        return NotificationCompat.Builder(
+            this,
             MyApp.CHANNEL_ID
         )
             .setSmallIcon(R.drawable.ic_notification)
@@ -164,6 +171,9 @@ class TimerService : Service() {
                         totalTimeLiveData.postValue(if (totalTimeLiveData.value == null) 0 else totalTimeLiveData.value!! + 1)
                         Thread.sleep(1000)
                         time--
+                        if (time in 1..MAKE_TONE_WHEN_REMAINING_SECOND) {
+                            toneGenerator.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 100)
+                        }
                     } else {
                         Thread.sleep(1000)
                     }
@@ -208,6 +218,7 @@ class TimerService : Service() {
     override fun onDestroy() {
         timeLiveData.removeObserver(observer)
         scope.cancel()
+        toneGenerator.release()
         super.onDestroy()
     }
 
